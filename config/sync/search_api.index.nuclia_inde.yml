@@ -1,0 +1,46 @@
+uuid: ed500752-b42e-4605-a8d9-f725888790cc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - search_api.server.nuclia_backend
+  module:
+    - search_api
+    - node
+id: nuclia_inde
+name: 'Nuclia index'
+description: ''
+read_only: false
+field_settings:
+  body:
+    label: Body
+    datasource_id: 'entity:node'
+    property_path: body
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.body
+datasource_settings:
+  'entity:node':
+    bundles:
+      default: false
+      selected:
+        - article
+    languages:
+      default: true
+      selected: {  }
+processor_settings:
+  add_url: {  }
+  aggregated_field: {  }
+  entity_type: {  }
+  language_with_fallback: {  }
+  rendered_item: {  }
+tracker_settings:
+  default:
+    indexing_order: fifo
+options:
+  index_directly: true
+  track_changes_in_references: true
+  cron_limit: 50
+server: nuclia_backend
