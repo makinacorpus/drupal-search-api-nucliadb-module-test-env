@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  db:
+    image: mariadb:10.7
+    container_name: drupaldb
+    env_file:
+      - docker.env
+    volumes:
+      - docker_db:/var/lib/mysql
+
+  drupal:
+    container_name: drupal
+    depends_on:
+      - db
+    # Use the local Dockerfile instead of an existing image
+    build:
+      context: .
+      dockerfile: './.docker/drupal/Dockerfile'
+      args:
+        - DRUPAL_CONTAINER_USER_NAME=${DRUPAL_CONTAINER_USER_NAME}
+        - HOST_WWW_UID=${HOST_WWW_UID}
+        - PROJECT_DIR=${PROJECT_DIR}
+        - PHP_VERSION=${PHP_VERSION}
+    env_file:
+      - docker.env
+    ports:
+      - "8180:80"
+    volumes:
+      - .:/var/www/html
+    links:
+      - db:mysql
+
+volumes:
+  docker_db:
